@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>notes-app</title>
+  <style>
+    table.notes{
+      border-collapse: collapse;
+      margin: 8px auto;
+    }
+    th, td {
+      border: 1px solid black;
+      padding: 8px;
+      word-wrap: break-word;
+    }
+    th.buttontype{
+      border: 0;
+    }
+    td.title {
+      max-width: 120px;
+      text-align: center;
+    }
+    td.notes{
+      max-width: 300px;
+    }
+    td.buttontype{
+      border: 0;
+    }
+    div.forms {
+      text-align: center;
+    }
+    textarea {
+      width: 100px;
+      vertical-align: top;
+      margin: 0;
+      resize: none;
+    }
+  </style>
+</head>
+
+<body>
+
+  
+    <div id="app">
+      <p>MongoDB database status: {{ mongodb_status }}</p>
+      <ul>
+        <li>Insert Entry: {{ insert_status }}</li>
+        <li>Delete Entry: {{ delete_status }}</li>
+        <li>Update Entry: {{ update_status }}</li>
+        <li>Show Entries: {{ show_status }}</li>
+        <li>Completion Toggle: {{ toggle_status }}</li>
+        <li>Filter Entries: {{ filter_status }}</li>
+      </ul>
+
+      <p>Nodejs backend status: {{ nodejs_status }}</p>
+      <p>Vuejs frontend status: {{ vuejs_status }}</p>
+      <p>Login page status: {{ loginpage_status }}</p>
+      <ul>
+        <li>Login auth: {{ login_status }}</li>
+        <li>Signup: {{ signup_status }}</li>
+        <li>Security: {{ security_status }}</li>
+      </ul>
+    </div>
+
+  <table class="notes">
+  <th>Title</th>
+  <th>Note</th>
+  <th>Complete?</th>
+  <th class="buttontype"></th>
+  <% for(var i=0; i<notes.length; i++) {%>
+    <tr>
+      <td class="title"><%= notes[i].title %></td>
+      <td class="notes"><%= notes[i].note %></td>
+      <td class="complete"><%= notes[i].complete%></td>
+      <td class="buttontype"><form action="/delete" method="POST">
+        <button type="submit" name="title" value="<%= notes[i].title %>">Delete</button>
+      </form></td>
+      <td class="buttontype"><form action="/toggle" method="POST">
+        <button type="submit" name="title" value="<%= notes[i].title %>">Toggle Completion</button>
+      </form></td>
+    </tr>
+  <% } %>
+  <tr>
+
+  </table>
+
+  <div class="forms"><form action="/insert" method="POST">
+    <input type="text" placeholder="Title" name="title">
+    <textarea name="note" placeholder="Enter Note"></textarea>
+    <input type="hidden" name="complete" value="false">
+    <button type="submit">Insert/Update</button>
+  </form></div>
+  
+  <form action="/filter" method="POST">
+    <button type="submit" name="tofilter" value="complete">Show Complete</button>
+    <button type="submit" name="tofilter" value="incomplete">Show Incomplete</button>
+    <button type="submit" name="tofilter" value="all">Show All</button>
+  </form>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+  <script>
+    const app = new Vue({
+        el: '#app', 
+        data: { 
+            mongodb_status: 'Integrated and working',
+            insert_status: 'OK',
+            delete_status: 'OK',
+            update_status: 'OK',
+            show_status: 'OK',
+            toggle_status: 'OK',
+            filter_status: 'Partially Implemented. Filter only does not carry over on any other action',
+            nodejs_status: 'Integrated and working',
+            vuejs_status: 'Implemented but app is not really built on it.',
+            loginpage_status: 'Unimplemented',
+            login_status: 'Unimplemented',
+            signup_status: 'Unimplemented',
+            security_status: 'Unimplemented'
+        }
+    });
+  </script>
+
+  
+</body>
+</html>
